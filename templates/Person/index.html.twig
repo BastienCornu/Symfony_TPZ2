@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+{% block title %}index :{% endblock %}
+{% block body %}
+    {% for p in persons %}
+        <ul>
+            <li>{{ p.id }}</li>
+            <li>{{ p.name }}</li>
+            <li>{{ p.age }}</li>
+            <li>{{ p.visible }}</li>
+            <li>{{ p.createdAt|date }}</li>
+            <li>{{ p.color }}</li>
+        </ul>
+        <a href="{{ path('app_person_edit') }}" ><button>Modifier</button></a>
+    {% endfor %}
+{% endblock %}
