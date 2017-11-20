@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+{% block title %}index :{% endblock %}
+{% block body %}
+    {% for i in inventories %}
+        <fieldset>
+            <legend>{{ i.id }}</legend>
+            <ul>
+
+                <li>{{ i.material }}</li>
+                <li>{{ i.person }}</li>
+                <li>{{ i.numberOfItem }}</li>
+            </ul>
+        </fieldset>
+    {% endfor %}
+
+{% endblock %}

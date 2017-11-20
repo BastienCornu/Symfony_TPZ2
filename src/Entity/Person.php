@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,30 +32,37 @@ class Person
     /**
      * var int
      *
-     * @ORM\Column(name="age",type="integer")
+     * @ORM\Column(name="max_weight",type="decimal",precision=3,scale=1)
      */
-    protected $age;
+    protected $maxWeight;
 
     /**
-     * var boolean
+     * @var Inventory[]
      *
-     * @ORM\Column(name="visible",type="boolean")
+     * @ORM\OneToMany(targetEntity="Inventory",mappedBy="person")
      */
-    protected $visible;
+    protected $inventories;
+
+    public function __construct()
+    {
+        $this->inventories = new ArrayCollection();
+    }
 
     /**
-     * var Datetime
-     *
-     * @ORM\Column(name="created_at",type="datetime")
+     * @return Inventory[]
      */
-    protected $createdAt;
+    public function getInventories()
+    {
+        return $this->inventories;
+    }
 
     /**
-     * var string
-     *
-     * @ORM\Column(name="color",type="string")
+     * @param Inventory[] $inventories
      */
-    protected $color;
+    public function setInventories($inventories)
+    {
+        $this->inventories = $inventories;
+    }
 
     /**
      * @return mixed
@@ -82,64 +90,24 @@ class Person
     /**
      * @return mixed
      */
-    public function getAge()
+    public function getMaxWeight()
     {
-        return $this->age;
+        return $this->maxWeight;
     }
 
     /**
-     * @param mixed $age
+     * @param mixed $maxWeight
      */
-    public function setAge($age)
+    public function setMaxWeight($maxWeight)
     {
-        $this->age = $age;
+        $this->maxWeight = $maxWeight;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getVisible()
+    function __toString()
     {
-        return $this->visible;
+        // TODO: Implement __toString() method.
+        return $this->getId()." - ".$this->getName()." - ".$this->getMaxWeight();
     }
 
-    /**
-     * @param mixed $visible
-     */
-    public function setVisible($visible)
-    {
-        $this->visible = $visible;
-    }
 
-    /**
-     * @return mixed
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param mixed $createdAt
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getColor()
-    {
-        return $this->color;
-    }
-
-    /**
-     * @param mixed $color
-     */
-    public function setColor($color)
-    {
-        $this->color = $color;
-    }
 }
