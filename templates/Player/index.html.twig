@@ -1,9 +1,9 @@
 {% extends "base.html.twig" %}
 {% block title %}index :{% endblock %}
 {% block body %}
-    {% for p in persons %}
+    {% for p in players %}
         <ul>
-            <li>{{ p}}</li>
+            <a href="{{ path('app_player_inventaire',{'id':p.id}) }}"><li>{{ p }}</li></a>
         </ul>
     {% endfor %}
 {% endblock %}

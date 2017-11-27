@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+{% block title %}Inventaire {{  player.name}}{% endblock %}
+{%  block body %}
+    <fieldset>
+    <legend>{{ player.name }}</legend>
+    {% for playerItem in playerItems %}
+            <ul>
+                <li>{{ playerItem }}</li></a>
+            </ul>
+    {% endfor %}
+    </fieldset>
+
+{% endblock %}

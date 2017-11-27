@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+{% block title %}index :{% endblock %}
+{% block body %}
+    {% for p in playeritems %}
+        <fieldset>
+            <legend>{{ p.id }}</legend>
+            <ul>
+
+                <li>{{ p.player }}</li>
+                <li>{{ p.item }}</li>
+                <li>{{ p.position }}</li>
+                <li>{{ p.createdAt|date }}</li>
+            </ul>
+        </fieldset>
+    {% endfor %}
+
+{% endblock %}
