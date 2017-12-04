@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\Entity\Player;
 use App\Entity\PlayerItem;
+use App\Event\AppEvent;
 use App\Form\PlayerItemType;
 use App\Form\PlayerType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,15 +26,17 @@ class PlayerController extends Controller
      */
     function new(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $player = new Player();
-
+        $player = $this->get(\App\Entity\Player::class);
         $form = $this->createForm(PlayerType::class,$player);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $em->persist($player);
-            $em->flush();
+
+            $playerEvent = $this->get(\App\Event\PlayerEvent::class);
+            $playerEvent->setPlayer($player);
+            $dispatcher = $this->get('event_dispatcher');
+            $dispatcher->dispatch(AppEvent::PLAYER_ADD, $playerEvent);
+
             return $this->redirect($this->generateUrl('app_player_index'));
         }
         return $this->render("Player/new.html.twig",['form'=>$form->createView(), ]);
@@ -51,12 +54,22 @@ class PlayerController extends Controller
     }
 
     /**
-     * @Route("/player/inventaire/{id}" , name="app_player_inventaire")
+     * @Route("/player/{id}" , name="app_player_edit")
      */
-    function inventaire(Player $player)
+    function edit(Request $request, Player $player)
     {
-        $em = $this->getDoctrine()->getManager();
-        $playerItems = $em->getRepository(PlayerItem::class)->findBy(array('player'=>$player));
-        return $this->render("Player/inventaire.html.twig",["playerItems"=>$playerItems,"player"=>$player]);
+        $form = $this->createForm(PlayerType::class,$player);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $playerEvent = $this->get(\App\Event\PlayerEvent::class);
+            $playerEvent->setPlayer($player);
+            $playerEvent->setAddMoney($form->get('AjouterMoney'));
+            $playerEvent->setMoney('AjouterExperience')->getData();
+            $dispatcher = $this->get('event_dispatcher');
+            $dispatcher->dispatch(AppEvent::PLAYER_EDIT, $playerEvent);
+            return $this->redirect($this->generateUrl('app_player_index'));
+        }
+        return $this->render("Player/new.html.twig",['form'=>$form->createView(), ]);
     }
 }

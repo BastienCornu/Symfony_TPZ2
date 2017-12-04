@@ -28,8 +28,8 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
-    App\SizeEquipment\Equipment:
-        arguments: ['@doctrine.orm.entity_manager','%nb_item%']
+    App\Entity\Player:
         public: true
-        autowire: false
+    App\Event\PlayerEvent:
+        public: true
 
